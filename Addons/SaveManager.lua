@@ -245,32 +245,6 @@ local SaveManager = {} do
             end
         })
 
-		section:AddButton({Title = "Delete Config", Callback = function()
-			local name = SaveManager.Options.SaveManager_ConfigList.Value
-			local config = self.Folder .. "/settings/" .. name .. ".json"
-			if not isfile(config) then print(config); return end
-			self.Library.Window:Dialog({
-				Title = "Delete Config",
-				Content = "You'r about to delete this config",
-				Buttons = {
-					{
-						Title = "Are You Sure ?",
-						Callback = function()
-							delfile(config)
-							SaveManager.Options.SaveManager_ConfigList:SetValue(nil)
-							SaveManager.Options.SaveManager_ConfigList:SetValues(self:RefreshConfigList())
-						end
-					},
-					{
-						Title = "Cancel",
-						Callback = function()
-							
-						end
-					}
-				}
-			})
-		end})
-
         section:AddButton({Title = "Load config", Callback = function()
 			local name = SaveManager.Options.SaveManager_ConfigList.Value
 
@@ -321,27 +295,14 @@ local SaveManager = {} do
 		local AutoloadButton
 		AutoloadButton = section:AddButton({Title = "Set as autoload", Description = "Current autoload config: none", Callback = function()
 			local name = SaveManager.Options.SaveManager_ConfigList.Value
-			if name then
-				writefile(self.Folder .. "/settings/autoload.txt", name)
-				AutoloadButton:SetDesc("Current autoload config: " .. name)
-				self.Library:Notify({
-					Title = "Interface",
-					Content = "Config loader",
-					SubContent = string.format("Set %q to auto load", name),
-					Duration = 7
-				})
-			else
-				if isfile(self.Folder .. "/settings/autoload.txt") then
-					delfile(self.Folder .. "/settings/autoload.txt")
-				end
-				AutoloadButton:SetDesc("Current autoload config: none")
-				self.Library:Notify({
-					Title = "Interface",
-					Content = "Config loader",
-					SubContent = "Set none to auto load",
-					Duration = 7
-				})
-			end
+			writefile(self.Folder .. "/settings/autoload.txt", name)
+			AutoloadButton:SetDesc("Current autoload config: " .. name)
+			self.Library:Notify({
+				Title = "Interface",
+				Content = "Config loader",
+				SubContent = string.format("Set %q to auto load", name),
+				Duration = 7
+			})
 		end})
 
 		if isfile(self.Folder .. "/settings/autoload.txt") then

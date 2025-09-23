@@ -65,9 +65,8 @@ function Element:New(Idx, Config)
 		Func(Toggle.Value)
 	end
 
-	function Toggle:SetValue(Value, callback)
+	function Toggle:SetValue(Value)
 		Value = not not Value
-		if Toggle.Value == Value and not callback then return end
 		Toggle.Value = Value
 
 		Creator.OverrideTag(ToggleBorder, { Color = Toggle.Value and "Accent" or "ToggleSlider" })
@@ -97,7 +96,7 @@ function Element:New(Idx, Config)
 		Toggle:SetValue(not Toggle.Value)
 	end)
 
-	Toggle:SetValue(Toggle.Value, true)
+	Toggle:SetValue(Toggle.Value)
 
 	Library.Options[Idx] = Toggle
 	return Toggle

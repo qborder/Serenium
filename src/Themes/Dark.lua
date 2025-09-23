@@ -1,58 +1,47 @@
 return {
 	Name = "Dark",
-	-- Modern purple-blue accent with high contrast
-	Accent = Color3.fromRGB(138, 102, 255),
+	Accent = Color3.fromRGB(96, 205, 255),
 
-	-- Deep dark base with subtle warm tones
-	AcrylicMain = Color3.fromRGB(15, 16, 20),
-	AcrylicBorder = Color3.fromRGB(45, 47, 55),
-	AcrylicGradient = ColorSequence.new(Color3.fromRGB(20, 21, 26), Color3.fromRGB(12, 13, 17)),
-	AcrylicNoise = 0.85,
+	AcrylicMain = Color3.fromRGB(60, 60, 60),
+	AcrylicBorder = Color3.fromRGB(90, 90, 90),
+	AcrylicGradient = ColorSequence.new(Color3.fromRGB(40, 40, 40), Color3.fromRGB(40, 40, 40)),
+	AcrylicNoise = 0.9,
 
-	-- Clean lines and tabs with better contrast
-	TitleBarLine = Color3.fromRGB(60, 62, 70),
-	Tab = Color3.fromRGB(180, 185, 195),
+	TitleBarLine = Color3.fromRGB(75, 75, 75),
+	Tab = Color3.fromRGB(120, 120, 120),
 
-	-- Modern element styling with better depth
-	Element = Color3.fromRGB(35, 37, 45),
-	ElementBorder = Color3.fromRGB(55, 57, 65),
-	InElementBorder = Color3.fromRGB(85, 87, 95),
-	ElementTransparency = 0.80,
+	Element = Color3.fromRGB(120, 120, 120),
+	ElementBorder = Color3.fromRGB(35, 35, 35),
+	InElementBorder = Color3.fromRGB(90, 90, 90),
+	ElementTransparency = 0.87,
 
-	-- Improved toggle colors with better visibility
-	ToggleSlider = Color3.fromRGB(120, 125, 135),
-	ToggleToggled = Color3.fromRGB(15, 16, 20),
+	ToggleSlider = Color3.fromRGB(120, 120, 120),
+	ToggleToggled = Color3.fromRGB(0, 0, 0),
 
-	-- Enhanced slider styling
-	SliderRail = Color3.fromRGB(75, 77, 85),
+	SliderRail = Color3.fromRGB(120, 120, 120),
 
-	-- Modern dropdown with better contrast
-	DropdownFrame = Color3.fromRGB(45, 47, 55),
-	DropdownHolder = Color3.fromRGB(25, 26, 32),
-	DropdownBorder = Color3.fromRGB(65, 67, 75),
-	DropdownOption = Color3.fromRGB(190, 195, 205),
+	DropdownFrame = Color3.fromRGB(160, 160, 160),
+	DropdownHolder = Color3.fromRGB(45, 45, 45),
+	DropdownBorder = Color3.fromRGB(35, 35, 35),
+	DropdownOption = Color3.fromRGB(120, 120, 120),
 
-	-- Clean keybind styling
-	Keybind = Color3.fromRGB(160, 165, 175),
+	Keybind = Color3.fromRGB(120, 120, 120),
 
-	-- Modern input fields with focus states
-	Input = Color3.fromRGB(40, 42, 50),
-	InputFocused = Color3.fromRGB(20, 21, 26),
-	InputIndicator = Color3.fromRGB(138, 102, 255),
+	Input = Color3.fromRGB(160, 160, 160),
+	InputFocused = Color3.fromRGB(10, 10, 10),
+	InputIndicator = Color3.fromRGB(150, 150, 150),
 
-	-- Sophisticated dialog styling
-	Dialog = Color3.fromRGB(30, 32, 38),
-	DialogHolder = Color3.fromRGB(20, 21, 26),
-	DialogHolderLine = Color3.fromRGB(55, 57, 65),
-	DialogButton = Color3.fromRGB(40, 42, 50),
-	DialogButtonBorder = Color3.fromRGB(75, 77, 85),
-	DialogBorder = Color3.fromRGB(65, 67, 75),
-	DialogInput = Color3.fromRGB(35, 37, 45),
-	DialogInputLine = Color3.fromRGB(138, 102, 255),
+	Dialog = Color3.fromRGB(45, 45, 45),
+	DialogHolder = Color3.fromRGB(35, 35, 35),
+	DialogHolderLine = Color3.fromRGB(30, 30, 30),
+	DialogButton = Color3.fromRGB(45, 45, 45),
+	DialogButtonBorder = Color3.fromRGB(80, 80, 80),
+	DialogBorder = Color3.fromRGB(70, 70, 70),
+	DialogInput = Color3.fromRGB(55, 55, 55),
+	DialogInputLine = Color3.fromRGB(160, 160, 160),
 
-	-- High contrast text for better readability
-	Text = Color3.fromRGB(245, 248, 252),
-	SubText = Color3.fromRGB(185, 190, 200),
-	Hover = Color3.fromRGB(165, 125, 255),
-	HoverChange = 0.05,
+	Text = Color3.fromRGB(240, 240, 240),
+	SubText = Color3.fromRGB(170, 170, 170),
+	Hover = Color3.fromRGB(120, 120, 120),
+	HoverChange = 0.07,
 }

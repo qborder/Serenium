@@ -1,17 +1,11 @@
 local Themes = {
 	Names = {
-		"Obsidian",
-		"Gold",
-		"Silver",
 		"Dark",
 		"Darker",
 		"Light",
 		"Aqua",
 		"Amethyst",
 		"Rose",
-		"Crimson",
-		"Emerald",
-		"Sapphire",
 	},
 }
 
