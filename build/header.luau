@@ -1,9 +1,14 @@
 --[[
-    Fluent Interface Suite
-    This script is not intended to be modified.
-    To view the source code, see the 'src' folder on GitHub!
+    ========================================
+    SERENIUM UI LIBRARY - Advanced Interface Suite
+    ========================================
 
-    Author: dawid
+    WARNING: This is an automatically generated and minified script
+    Do NOT modify this file - edit the source code instead!
+
+    Author: qborder
     License: MIT
-    GitHub: https://github.com/dawid-scripts/Fluent
+    Repository: https://github.com/qborder/Serenium
+    Documentation: https://github.com/qborder/Serenium/wiki
+    ========================================
 --]]

@@ -150,29 +150,9 @@ function Element:New(Idx, Config)
 		end
 	end)
 
-	Creator.AddSignal(SliderInner.InputBegan, function(Input)
-		if
-			Input.UserInputType == Enum.UserInputType.MouseButton1
-			or Input.UserInputType == Enum.UserInputType.Touch
-		then
-			local SizeScale =
-				math.clamp((Input.Position.X - SliderRail.AbsolutePosition.X) / SliderRail.AbsoluteSize.X, 0, 1)
-			local ClickValue = RangeSlider.Min + ((RangeSlider.Max - RangeSlider.Min) * SizeScale)
-			
-			local MinDistance = math.abs(ClickValue - RangeSlider.Value[1])
-			local MaxDistance = math.abs(ClickValue - RangeSlider.Value[2])
-			
-			if MinDistance < MaxDistance then
-				DraggingMin = true
-			else
-				DraggingMax = true
-			end
-		end
-	end)
-
 	Creator.AddSignal(UserInputService.InputChanged, function(Input)
 		if
-			(DraggingMin or DraggingMax)
+			DraggingMin
 			and (
 				Input.UserInputType == Enum.UserInputType.MouseMovement
 				or Input.UserInputType == Enum.UserInputType.Touch
@@ -181,26 +161,22 @@ function Element:New(Idx, Config)
 			local SizeScale =
 				math.clamp((Input.Position.X - SliderRail.AbsolutePosition.X) / SliderRail.AbsoluteSize.X, 0, 1)
 			local NewValue = RangeSlider.Min + ((RangeSlider.Max - RangeSlider.Min) * SizeScale)
-			
-			if DraggingMin then
-				local MaxValue = RangeSlider.Value[2]
-				NewValue = math.min(NewValue, MaxValue - (RangeSlider.Rounding or 1))
-				RangeSlider:SetValue({NewValue, MaxValue})
-			elseif DraggingMax then
-				local MinValue = RangeSlider.Value[1]
-				NewValue = math.max(NewValue, MinValue + (RangeSlider.Rounding or 1))
-				RangeSlider:SetValue({MinValue, NewValue})
-			end
-		end
-	end)
-
-	Creator.AddSignal(UserInputService.InputEnded, function(Input)
-		if
-			Input.UserInputType == Enum.UserInputType.MouseButton1
-			or Input.UserInputType == Enum.UserInputType.Touch
+			local MaxValue = RangeSlider.Value[2]
+			NewValue = math.min(NewValue, MaxValue)
+			RangeSlider:SetValue({NewValue, MaxValue})
+		elseif
+			DraggingMax
+			and (
+				Input.UserInputType == Enum.UserInputType.MouseMovement
+				or Input.UserInputType == Enum.UserInputType.Touch
+			)
 		then
-			DraggingMin = false
-			DraggingMax = false
+			local SizeScale =
+				math.clamp((Input.Position.X - SliderRail.AbsolutePosition.X) / SliderRail.AbsoluteSize.X, 0, 1)
+			local NewValue = RangeSlider.Min + ((RangeSlider.Max - RangeSlider.Min) * SizeScale)
+			local MinValue = RangeSlider.Value[1]
+			NewValue = math.max(NewValue, MinValue)
+			RangeSlider:SetValue({MinValue, NewValue})
 		end
 	end)
 
@@ -213,12 +189,8 @@ function Element:New(Idx, Config)
 		local MinVal = Library:Round(math.clamp(Value[1], RangeSlider.Min, RangeSlider.Max), RangeSlider.Rounding)
 		local MaxVal = Library:Round(math.clamp(Value[2], RangeSlider.Min, RangeSlider.Max), RangeSlider.Rounding)
 		
-		if MinVal >= MaxVal then
-			if DraggingMin then
-				MaxVal = MinVal + RangeSlider.Rounding
-			else
-				MinVal = MaxVal - RangeSlider.Rounding
-			end
+		if MinVal > MaxVal then
+			MinVal, MaxVal = MaxVal, MinVal
 		end
 		
 		RangeSlider.Value = {MinVal, MaxVal}
@@ -226,19 +198,10 @@ function Element:New(Idx, Config)
 		local MinScale = (MinVal - RangeSlider.Min) / (RangeSlider.Max - RangeSlider.Min)
 		local MaxScale = (MaxVal - RangeSlider.Min) / (RangeSlider.Max - RangeSlider.Min)
 		
-		TweenService:Create(MinSliderDot, TweenInfo.new(0.1, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
-			Position = UDim2.new(MinScale, -7, 0.5, 0)
-		}):Play()
-		
-		TweenService:Create(MaxSliderDot, TweenInfo.new(0.1, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
-			Position = UDim2.new(MaxScale, -7, 0.5, 0)
-		}):Play()
-		
-		TweenService:Create(SliderFill, TweenInfo.new(0.1, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
-			Position = UDim2.fromScale(MinScale, 0),
-			Size = UDim2.fromScale(MaxScale - MinScale, 1)
-		}):Play()
-		
+		MinSliderDot.Position = UDim2.new(MinScale, -7, 0.5, 0)
+		MaxSliderDot.Position = UDim2.new(MaxScale, -7, 0.5, 0)
+		SliderFill.Position = UDim2.fromScale(MinScale, 0)
+		SliderFill.Size = UDim2.fromScale(MaxScale - MinScale, 1)
 		SliderDisplay.Text = tostring(MinVal) .. " - " .. tostring(MaxVal)
 
 		Library:SafeCallback(RangeSlider.Callback, RangeSlider.Value)

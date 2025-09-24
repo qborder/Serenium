@@ -2,7 +2,8 @@ local fs = require("@lune/fs")
 local process = require("@lune/process")
 local BuildCodegen = require("modules/BuildCodegen")
 
-local FilePath = "dist/main.lua"
+local DistFilePath = "dist/main.lua"
+local RootFilePath = "main.lua"
 local TempFile = "dist/temp.lua"
 local Header = fs.readFile("build/header.luau")
 
@@ -16,5 +17,7 @@ end
 
 local Module = fs.readFile("dist/main.rbxm")
 local ModelCodegen = BuildCodegen(Module, false)
+local FinalContent = Header .. "\n" .. minify(ModelCodegen)
 
-fs.writeFile(FilePath, Header .. "\n" .. minify(ModelCodegen))
+fs.writeFile(DistFilePath, FinalContent)
+fs.writeFile(RootFilePath, FinalContent)

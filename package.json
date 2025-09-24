@@ -4,7 +4,7 @@
   "description": "",
   "main": "init.lua",
   "scripts": {
-    "rojo": "mkdirp dist && rojo build -o dist/main.rbxm",
+    "rojo": "mkdirp dist && rojo build -o dist/main.rbxm && rojo build -o main.rbxm",
     "bundle": "pnpm run rojo && lune build"
   },
   "keywords": [],

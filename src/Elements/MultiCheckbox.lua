@@ -29,7 +29,7 @@ function Element:New(Idx, Config)
 	-- Container for all checkboxes
 	local CheckboxContainer = New("Frame", {
 		Size = UDim2.new(1, -20, 0, 0),
-		Position = UDim2.new(0, 10, 0, 0),
+		Position = UDim2.new(0, 10, 1, 8),
 		BackgroundTransparency = 1,
 		Parent = CheckboxFrame.Frame,
 		AutomaticSize = Enum.AutomaticSize.Y,
