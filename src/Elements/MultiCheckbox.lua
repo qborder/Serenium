@@ -28,11 +28,11 @@ function Element:New(Idx, Config)
 
 	-- Container for all checkboxes
 	local CheckboxContainer = New("Frame", {
-		Size = UDim2.new(1, -20, 0, 0),
-		Position = UDim2.new(0, 10, 5, -1),
+		Size = UDim2.new(1, 0, 0, 0),
 		BackgroundTransparency = 1,
-		Parent = CheckboxFrame.Frame,
+		Parent = CheckboxFrame.LabelHolder,
 		AutomaticSize = Enum.AutomaticSize.Y,
+		LayoutOrder = 3,
 	}, {
 		New("UIListLayout", {
 			Padding = UDim.new(0, 6),
