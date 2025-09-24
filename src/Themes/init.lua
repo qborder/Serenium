@@ -3,9 +3,18 @@ local Themes = {
 		"Dark",
 		"Darker",
 		"Light",
+		"Obsidian",
+		"Gold",
+		"Silver",
 		"Aqua",
 		"Amethyst",
 		"Rose",
+		"Crimson",
+		"Emerald",
+		"Sapphire",
+		"Midnight",
+		"Phantom",
+		"Void",
 	},
 }
 
