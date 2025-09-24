@@ -232,6 +232,23 @@ do
 
 
 
+    local Checkbox = Tabs.Main:AddCheckbox("Checkbox", {
+        Title = "Single Checkbox",
+        Description = "Simple true/false option",
+        Default = false,
+        Callback = function(Value)
+            print("Checkbox changed:", Value)
+        end
+    })
+
+    Checkbox:OnChanged(function(Value)
+        print("Checkbox state:", Value)
+    end)
+
+    Checkbox:SetValue(true)
+
+
+
     local MultiCheckbox = Tabs.Main:AddMultiCheckbox("MultiCheckbox", {
         Title = "Multi Checkbox",
         Description = "Select multiple options",

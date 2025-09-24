@@ -1,4 +1,5 @@
 local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
 local Root = script.Parent.Parent
 local Creator = require(Root.Creator)
 
@@ -149,6 +150,26 @@ function Element:New(Idx, Config)
 		end
 	end)
 
+	Creator.AddSignal(SliderInner.InputBegan, function(Input)
+		if
+			Input.UserInputType == Enum.UserInputType.MouseButton1
+			or Input.UserInputType == Enum.UserInputType.Touch
+		then
+			local SizeScale =
+				math.clamp((Input.Position.X - SliderRail.AbsolutePosition.X) / SliderRail.AbsoluteSize.X, 0, 1)
+			local ClickValue = RangeSlider.Min + ((RangeSlider.Max - RangeSlider.Min) * SizeScale)
+			
+			local MinDistance = math.abs(ClickValue - RangeSlider.Value[1])
+			local MaxDistance = math.abs(ClickValue - RangeSlider.Value[2])
+			
+			if MinDistance < MaxDistance then
+				DraggingMin = true
+			else
+				DraggingMax = true
+			end
+		end
+	end)
+
 	Creator.AddSignal(UserInputService.InputChanged, function(Input)
 		if
 			(DraggingMin or DraggingMax)
@@ -163,13 +184,23 @@ function Element:New(Idx, Config)
 			
 			if DraggingMin then
 				local MaxValue = RangeSlider.Value[2]
-				NewValue = math.min(NewValue, MaxValue)
+				NewValue = math.min(NewValue, MaxValue - (RangeSlider.Rounding or 1))
 				RangeSlider:SetValue({NewValue, MaxValue})
 			elseif DraggingMax then
 				local MinValue = RangeSlider.Value[1]
-				NewValue = math.max(NewValue, MinValue)
+				NewValue = math.max(NewValue, MinValue + (RangeSlider.Rounding or 1))
 				RangeSlider:SetValue({MinValue, NewValue})
 			end
+		end
+	end)
+
+	Creator.AddSignal(UserInputService.InputEnded, function(Input)
+		if
+			Input.UserInputType == Enum.UserInputType.MouseButton1
+			or Input.UserInputType == Enum.UserInputType.Touch
+		then
+			DraggingMin = false
+			DraggingMax = false
 		end
 	end)
 
@@ -182,8 +213,12 @@ function Element:New(Idx, Config)
 		local MinVal = Library:Round(math.clamp(Value[1], RangeSlider.Min, RangeSlider.Max), RangeSlider.Rounding)
 		local MaxVal = Library:Round(math.clamp(Value[2], RangeSlider.Min, RangeSlider.Max), RangeSlider.Rounding)
 		
-		if MinVal > MaxVal then
-			MinVal, MaxVal = MaxVal, MinVal
+		if MinVal >= MaxVal then
+			if DraggingMin then
+				MaxVal = MinVal + RangeSlider.Rounding
+			else
+				MinVal = MaxVal - RangeSlider.Rounding
+			end
 		end
 		
 		RangeSlider.Value = {MinVal, MaxVal}
@@ -191,11 +226,18 @@ function Element:New(Idx, Config)
 		local MinScale = (MinVal - RangeSlider.Min) / (RangeSlider.Max - RangeSlider.Min)
 		local MaxScale = (MaxVal - RangeSlider.Min) / (RangeSlider.Max - RangeSlider.Min)
 		
-		MinSliderDot.Position = UDim2.new(MinScale, -7, 0.5, 0)
-		MaxSliderDot.Position = UDim2.new(MaxScale, -7, 0.5, 0)
+		TweenService:Create(MinSliderDot, TweenInfo.new(0.1, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+			Position = UDim2.new(MinScale, -7, 0.5, 0)
+		}):Play()
 		
-		SliderFill.Position = UDim2.fromScale(MinScale, 0)
-		SliderFill.Size = UDim2.fromScale(MaxScale - MinScale, 1)
+		TweenService:Create(MaxSliderDot, TweenInfo.new(0.1, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+			Position = UDim2.new(MaxScale, -7, 0.5, 0)
+		}):Play()
+		
+		TweenService:Create(SliderFill, TweenInfo.new(0.1, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+			Position = UDim2.fromScale(MinScale, 0),
+			Size = UDim2.fromScale(MaxScale - MinScale, 1)
+		}):Play()
 		
 		SliderDisplay.Text = tostring(MinVal) .. " - " .. tostring(MaxVal)
 

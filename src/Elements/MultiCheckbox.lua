@@ -1,3 +1,4 @@
+local TweenService = game:GetService("TweenService")
 local Root = script.Parent.Parent
 local Creator = require(Root.Creator)
 
@@ -28,13 +29,13 @@ function Element:New(Idx, Config)
 	-- Container for all checkboxes
 	local CheckboxContainer = New("Frame", {
 		Size = UDim2.new(1, -20, 0, 0),
-		Position = UDim2.new(0, 10, 1, -10),
+		Position = UDim2.new(0, 10, 0, 0),
 		BackgroundTransparency = 1,
 		Parent = CheckboxFrame.Frame,
 		AutomaticSize = Enum.AutomaticSize.Y,
 	}, {
 		New("UIListLayout", {
-			Padding = UDim.new(0, 8),
+			Padding = UDim.new(0, 6),
 			SortOrder = Enum.SortOrder.LayoutOrder,
 		}),
 	})
@@ -53,7 +54,7 @@ function Element:New(Idx, Config)
 		})
 
 		local CheckIcon = New("Frame", {
-			Size = UDim2.fromOffset(16, 16),
+			Size = UDim2.fromOffset(18, 18),
 			Position = UDim2.new(0, 0, 0.5, 0),
 			AnchorPoint = Vector2.new(0, 0.5),
 			BackgroundColor3 = Color3.fromRGB(40, 42, 50),
@@ -63,7 +64,7 @@ function Element:New(Idx, Config)
 			},
 		}, {
 			New("UICorner", {
-				CornerRadius = UDim.new(0, 3),
+				CornerRadius = UDim.new(0, 4),
 			}),
 			New("UIStroke", {
 				Transparency = 0.5,
@@ -77,7 +78,7 @@ function Element:New(Idx, Config)
 				Position = UDim2.fromScale(0.5, 0.5),
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundTransparency = 1,
-				Image = "rbxassetid://10709790948", -- checkmark icon
+				Image = "rbxassetid://10709755989",
 				ImageTransparency = IsChecked and 0 or 1,
 				ThemeTag = {
 					ImageColor3 = "Accent",
@@ -86,8 +87,8 @@ function Element:New(Idx, Config)
 		})
 
 		local OptionLabel = New("TextLabel", {
-			Position = UDim2.new(0, 24, 0, 0),
-			Size = UDim2.new(1, -24, 1, 0),
+			Position = UDim2.new(0, 26, 0, 0),
+			Size = UDim2.new(1, -26, 1, 0),
 			BackgroundTransparency = 1,
 			Text = OptionText,
 			FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json"),
@@ -102,10 +103,22 @@ function Element:New(Idx, Config)
 
 		local function UpdateCheckbox()
 			local IsChecked = MultiCheckbox.Value[OptionText] or false
-			CheckIcon.ImageLabel.ImageTransparency = IsChecked and 0 or 1
-			Creator.OverrideTag(CheckIcon, { 
-				BackgroundColor3 = IsChecked and "Accent" or "Input" 
-			})
+			local CheckImage = CheckIcon.ImageLabel
+			if IsChecked then
+				TweenService:Create(CheckImage, TweenInfo.new(0.15, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+					ImageTransparency = 0
+				}):Play()
+				Creator.OverrideTag(CheckIcon, { 
+					BackgroundColor3 = "Accent" 
+				})
+			else
+				TweenService:Create(CheckImage, TweenInfo.new(0.15, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+					ImageTransparency = 1
+				}):Play()
+				Creator.OverrideTag(CheckIcon, { 
+					BackgroundColor3 = "Input" 
+				})
+			end
 		end
 
 		Creator.AddSignal(CheckboxButton.MouseButton1Click, function()
