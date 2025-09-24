@@ -22,14 +22,14 @@ function Element:New(Idx, Config)
 	}
 
 	local CheckboxFrame = require(Components.Element)(Config.Title, Config.Description, self.Container, false)
-	
+
 	MultiCheckbox.SetTitle = CheckboxFrame.SetTitle
 	MultiCheckbox.SetDesc = CheckboxFrame.SetDesc
 
 	-- Container for all checkboxes
 	local CheckboxContainer = New("Frame", {
 		Size = UDim2.new(1, -20, 0, 0),
-		Position = UDim2.new(0, 10, 1, 8),
+		Position = UDim2.new(0, 10, 1, 1),
 		BackgroundTransparency = 1,
 		Parent = CheckboxFrame.Frame,
 		AutomaticSize = Enum.AutomaticSize.Y,
@@ -108,15 +108,15 @@ function Element:New(Idx, Config)
 				TweenService:Create(CheckImage, TweenInfo.new(0.15, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
 					ImageTransparency = 0
 				}):Play()
-				Creator.OverrideTag(CheckIcon, { 
-					BackgroundColor3 = "Accent" 
+				Creator.OverrideTag(CheckIcon, {
+					BackgroundColor3 = "Accent"
 				})
 			else
 				TweenService:Create(CheckImage, TweenInfo.new(0.15, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
 					ImageTransparency = 1
 				}):Play()
-				Creator.OverrideTag(CheckIcon, { 
-					BackgroundColor3 = "Input" 
+				Creator.OverrideTag(CheckIcon, {
+					BackgroundColor3 = "Input"
 				})
 			end
 		end
@@ -128,7 +128,7 @@ function Element:New(Idx, Config)
 			else
 				MultiCheckbox.Value[OptionText] = true
 			end
-			
+
 			UpdateCheckbox()
 			Library:SafeCallback(MultiCheckbox.Callback, MultiCheckbox.Value)
 			Library:SafeCallback(MultiCheckbox.Changed, MultiCheckbox.Value)
@@ -185,7 +185,7 @@ function Element:New(Idx, Config)
 			end
 		end
 		CheckboxButtons = {}
-		
+
 		-- Create new checkboxes
 		for Index, Option in ipairs(NewOptions) do
 			CreateCheckbox(Option, Index)
