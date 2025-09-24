@@ -219,6 +219,58 @@ do
     Input:OnChanged(function()
         print("Input updated:", Input.Value)
     end)
+
+
+
+    local Label = Tabs.Main:AddLabel("Label", {
+        Title = "Status Label",
+        Description = "Shows current status",
+        Text = "Ready"
+    })
+
+    Label:SetText("Status Updated!")
+
+
+
+    local MultiCheckbox = Tabs.Main:AddMultiCheckbox("MultiCheckbox", {
+        Title = "Multi Checkbox",
+        Description = "Select multiple options",
+        Options = {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"},
+        Default = {"Option 1", "Option 3"},
+        Callback = function(Value)
+            local selected = {}
+            for option, isSelected in pairs(Value) do
+                if isSelected then
+                    table.insert(selected, option)
+                end
+            end
+            print("MultiCheckbox changed:", table.concat(selected, ", "))
+        end
+    })
+
+    MultiCheckbox:OnChanged(function(Value)
+        print("MultiCheckbox selected:", MultiCheckbox:GetSelected())
+    end)
+
+
+
+    local RangeSlider = Tabs.Main:AddRangeSlider("RangeSlider", {
+        Title = "Range Slider",
+        Description = "Select min and max values",
+        Default = {20, 80},
+        Min = 0,
+        Max = 100,
+        Rounding = 1,
+        Callback = function(Value)
+            print("RangeSlider changed:", Value[1], "-", Value[2])
+        end
+    })
+
+    RangeSlider:OnChanged(function(Value)
+        print("Range:", Value[1], "to", Value[2])
+    end)
+
+    RangeSlider:SetValue({25, 75})
 end
 
 

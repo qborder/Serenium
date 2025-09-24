@@ -168,103 +168,32 @@ end
 function TabModule:SelectTab(Tab)
 	local Window = TabModule.Window
 
-	if TabModule.Switching then return end
-	if TabModule.SelectedTab == Tab then return end
-
-	TabModule.Switching = true
 	TabModule.SelectedTab = Tab
 
-	for i, TabObject in next, TabModule.Tabs do
+	for _, TabObject in next, TabModule.Tabs do
 		TabObject.SetTransparency(1)
 		TabObject.Selected = false
-
-		if TabObject.Frame then
-			local ScaleMotor = Flipper.SingleMotor.new(1)
-			ScaleMotor:onStep(function(value)
-				if TabObject.Frame:FindFirstChild("UIScale") then
-					TabObject.Frame.UIScale.Scale = value
-				end
-			end)
-			ScaleMotor:setGoal(Spring(0.98, { frequency = 12, dampingRatio = 0.8 }))
-		end
 	end
-
-	TabModule.Tabs[Tab].SetTransparency(0.85)
+	TabModule.Tabs[Tab].SetTransparency(0.89)
 	TabModule.Tabs[Tab].Selected = true
 
-	if TabModule.Tabs[Tab].Frame and not TabModule.Tabs[Tab].Frame:FindFirstChild("UIScale") then
-		local Scale = New("UIScale", {
-			Scale = 1,
-			Parent = TabModule.Tabs[Tab].Frame
-		})
-	end
-
-	if TabModule.Tabs[Tab].Frame:FindFirstChild("UIScale") then
-		local SelectedScaleMotor = Flipper.SingleMotor.new(0.98)
-		SelectedScaleMotor:onStep(function(value)
-			TabModule.Tabs[Tab].Frame.UIScale.Scale = value
-		end)
-		SelectedScaleMotor:setGoal(Spring(1.02, { frequency = 15, dampingRatio = 0.7 }))
-		task.wait(0.1)
-		SelectedScaleMotor:setGoal(Spring(1, { frequency = 12, dampingRatio = 0.8 }))
-	end
-
-	local DisplayMotor = Flipper.SingleMotor.new(1)
-	DisplayMotor:onStep(function(value)
-		Window.TabDisplay.TextTransparency = value
-	end)
-	DisplayMotor:setGoal(Spring(0.7, { frequency = 20, dampingRatio = 0.9 }))
-
-	task.wait(0.08)
 	Window.TabDisplay.Text = TabModule.Tabs[Tab].Name
-	DisplayMotor:setGoal(Spring(0, { frequency = 18, dampingRatio = 0.8 }))
-
-	Window.SelectorPosMotor:setGoal(Spring(TabModule:GetCurrentTabPos(), { frequency = 8, dampingRatio = 0.75 }))
+	Window.SelectorPosMotor:setGoal(Spring(TabModule:GetCurrentTabPos(), { frequency = 6 }))
 
 	task.spawn(function()
 		Window.ContainerHolder.Parent = Window.ContainerAnim
-
-		Window.ContainerPosMotor:setGoal(Spring(-25, { frequency = 12, dampingRatio = 0.8 }))
-		Window.ContainerBackMotor:setGoal(Spring(0.9, { frequency = 15, dampingRatio = 0.9 }))
-
-		if not Window.ContainerAnim:FindFirstChild("UIScale") then
-			New("UIScale", {
-				Scale = 1,
-				Parent = Window.ContainerAnim
-			})
-		end
-
-		local ContainerScaleMotor = Flipper.SingleMotor.new(1)
-		ContainerScaleMotor:onStep(function(value)
-			if Window.ContainerAnim:FindFirstChild("UIScale") then
-				Window.ContainerAnim.UIScale.Scale = value
-			end
-		end)
-		ContainerScaleMotor:setGoal(Spring(0.95, { frequency = 12, dampingRatio = 0.8 }))
-
-		task.wait(0.15)
-
+		
+		Window.ContainerPosMotor:setGoal(Spring(15, { frequency = 10 }))
+		Window.ContainerBackMotor:setGoal(Spring(1, { frequency = 10 }))
+		task.wait(0.12)
 		for _, Container in next, TabModule.Containers do
 			Container.Visible = false
 		end
 		TabModule.Containers[Tab].Visible = true
-
-		ContainerScaleMotor:setGoal(Spring(1, { frequency = 10, dampingRatio = 0.7 }))
-		Window.ContainerPosMotor:setGoal(Spring(25, { frequency = 8, dampingRatio = 0.9 }))
-
-		task.wait(0.05)
-		Window.ContainerPosMotor:setGoal(Spring(0, { frequency = 12, dampingRatio = 0.8 }))
-		Window.ContainerBackMotor:setGoal(Spring(0, { frequency = 14, dampingRatio = 0.85 }))
-
-		task.wait(0.2)
+		Window.ContainerPosMotor:setGoal(Spring(0, { frequency = 5 }))
+		Window.ContainerBackMotor:setGoal(Spring(0, { frequency = 8 }))
+		task.wait(0.12)
 		Window.ContainerHolder.Parent = Window.ContainerCanvas
-
-		task.wait(0.1)
-		if Window.ContainerAnim:FindFirstChild("UIScale") then
-			Window.ContainerAnim.UIScale:Destroy()
-		end
-
-		TabModule.Switching = false
 	end)
 end
 
